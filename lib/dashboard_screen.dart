@@ -7,18 +7,18 @@ import 'package:app/widgeets/room_card.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'AnalyticsScreen.dart';
-import 'Profile.dart';
 import 'model/custom_room.dart';
 import 'model/user_location.dart';
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int currentPageIndex = 0;
   DateTime? lastBackPressTime;
   late Timer timer;
   late String currentTime;
@@ -30,6 +30,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   String _formatDigit(int number) {
     return number.toString().padLeft(2, '0');
   }
+
   //weater
   var latitude;
   var longitude;
@@ -38,7 +39,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Future<WeatherData?>? _futureData;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _checkLocationPermissionAndFetchData();
     _futureData = _getCurrentWeatherData();
@@ -49,6 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });
     });
   }
+
   void _checkLocationPermissionAndFetchData() async {
     if (await Permission.location.request().isGranted) {
       setState(() {
@@ -56,14 +57,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Location permission is required to fetch weather data.')),
+        SnackBar(
+            content:
+                Text('Location permission is required to fetch weather data.')),
       );
     }
-  }String getCurrentDate() {
+  }
+
+  String getCurrentDate() {
     final now = DateTime.now();
     final monthNames = [
-      'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
-      'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC'
     ];
     final day = now.day.toString().padLeft(2, '0');
     final month = monthNames[now.month - 1];
@@ -77,6 +92,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     longitude = currentLocation.longitude;
     return await client.getApiData(latitude, longitude);
   }
+
   // Make rooms list mutable
   LinearGradient getGradientForTimeOfDay() {
     final now = DateTime.now();
@@ -138,12 +154,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                if (_nameController.text.isNotEmpty && _imageController.text.isNotEmpty) {
+                if (_nameController.text.isNotEmpty &&
+                    _imageController.text.isNotEmpty) {
                   setState(() {
                     rooms.add({
                       'name': _nameController.text,
                       'image': _imageController.text,
-                      'screen': GenericRoomScreen(roomName: _nameController.text),
+                      'screen':
+                          GenericRoomScreen(roomName: _nameController.text),
                     });
                   });
                   Navigator.pop(context);
@@ -169,7 +187,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return WillPopScope(
       onWillPop: () async {
         if (lastBackPressTime == null ||
-            DateTime.now().difference(lastBackPressTime!) > Duration(seconds: 2)) {
+            DateTime.now().difference(lastBackPressTime!) >
+                Duration(seconds: 2)) {
           lastBackPressTime = DateTime.now();
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -185,6 +204,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         appBar: AppBar(
           title: const Text('Smart Home Dashboard'),
           backgroundColor: const Color(0xFFCC5500),
+          automaticallyImplyLeading: false,
           actions: [
             IconButton(
               icon: Icon(Icons.add),
@@ -192,17 +212,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ],
         ),
-        body: Container(decoration:  BoxDecoration(
-        gradient: getGradientForTimeOfDay()),
+        body: Container(
+          decoration: BoxDecoration(gradient: getGradientForTimeOfDay()),
           child: Column(
             children: [
               Expanded(
                 flex: 1,
                 child: Center(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20 , vertical: 10),
-                    child: CustomCard(currentTime: currentTime, currentDate: getCurrentDate(),
-                      currentWeather:FutureBuilder<WeatherData?>(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: CustomCard(
+                      currentTime: currentTime,
+                      currentDate: getCurrentDate(),
+                      currentWeather: FutureBuilder<WeatherData?>(
                         future: _futureData,
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
@@ -218,7 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           } else if (snapshot.hasData) {
                             return Text(
                               '${snapshot.data?.temperature}°C',
-                              style:  TextStyle(
+                              style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'Gill Sans',
@@ -232,9 +255,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             );
                           }
                         },
-                      ),),
-
-
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -257,58 +279,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => room['screen']),
+                          MaterialPageRoute(
+                              builder: (context) => room['screen']),
                         );
                       },
                     );
                   },
                 ),
-              ),
-              NavigationBar(
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    currentPageIndex = index;
-                  });
-                  switch (index) {
-                    case 0:
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => DashboardScreen()),
-                            (route) => false,
-                      );
-                      break;
-                    case 1:
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => AnalyticsScreen()),
-                      );
-                      break;
-                    case 2:
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ProfileScreen()),
-                      );
-                      break;
-                  }
-                },
-                selectedIndex: currentPageIndex,
-                destinations: const <Widget>[
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.dashboard),
-                    icon: Icon(Icons.dashboard_outlined),
-                    label: 'Dashboard',
-                  ),
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.analytics),
-                    icon: Icon(Icons.analytics_outlined),
-                    label: 'Analytics',
-                  ),
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.person),
-                    icon: Icon(Icons.person_outline),
-                    label: 'Profile',
-                  ),
-                ],
               ),
             ],
           ),
@@ -329,6 +306,7 @@ class GenericRoomScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(roomName),
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xFFCC5500),
       ),
       body: Center(
@@ -344,6 +322,3 @@ class GenericRoomScreen extends StatelessWidget {
 // Existing DigitalClock and RoomCard classes remain the same
 
 // Rest of the code remains the same (DigitalClock and RoomCard classes)
-
-
-

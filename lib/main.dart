@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 
 
 import 'homepage.dart';
-import 'siginpage.dart';
-import 'app_screen.dart';
-import 'register_page.dart';
 
 void main() {
   runApp(const MyApp());

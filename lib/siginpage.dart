@@ -1,5 +1,6 @@
+import 'package:app/bottom_nav_page.dart';
 import 'package:flutter/material.dart';
-import 'app_screen.dart';
+import 'dashboard_screen.dart';
 import 'register_page.dart';
 
 class SignInPage extends StatefulWidget {
@@ -48,7 +49,7 @@ class _SignInPageState extends State<SignInPage> {
 
 
                   SizedBox(height: 20),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: TextField(
                       controller: _nameController,
@@ -64,7 +65,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: TextField(
                       controller: _passwordController,
@@ -111,14 +112,14 @@ class _SignInPageState extends State<SignInPage> {
                     ],
                   ),
                   SizedBox(height: 16),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => DashboardScreen(),
+                            builder: (context) => RootPage(),
                           ),
                         );
                       },

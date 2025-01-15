@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app_screen.dart';
+import 'dashboard_screen.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -54,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(height: 32),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: TextField(
                       controller: _nameController,
