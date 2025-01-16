@@ -8,7 +8,7 @@ List<Map<String, dynamic>> rooms = [
   {
     'name': 'Kitchen',
     'image': 'assets/kitchen.jpeg',
-    'screen': KitchenScreen(),
+    'screen': KitchenPage(),
   },
   {
     'name': 'Living Room',

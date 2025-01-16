@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'weather/weatherModel.dart';
-
+import 'screens/KitchenScreen.dart';
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
@@ -177,7 +177,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         finalImagePath = 'assets/light1.jpg';
                         break;
                       default:
-                        finalImagePath = 'assets/default_room.jpg';
+                        finalImagePath = 'assets/bg.jpg';
                     }
                   }
 
@@ -185,7 +185,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     rooms.add({
                       'name': roomName,
                       'image': finalImagePath,
-                      'screen': GenericRoomScreen(roomName: roomName),
+                      // Assign specific screen for Kitchen, else use GenericRoomScreen
+                      'screen': roomName.toLowerCase() == 'kitchen'
+                          ? KitchenPage()
+                          : GenericRoomScreen(roomName: roomName),
                     });
                   });
                   Navigator.pop(context);
@@ -205,6 +208,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
