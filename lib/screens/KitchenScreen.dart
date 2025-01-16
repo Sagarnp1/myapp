@@ -23,7 +23,9 @@ class _KitchenPageState extends State<KitchenPage> {
       });
       // Simulate connection to switch using the API/ID
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Connected to switch: ${_switchboardController.text}')),
+        SnackBar(
+            content:
+                Text('Connected to switch: ${_switchboardController.text}')),
       );
     }
   }
@@ -54,62 +56,55 @@ class _KitchenPageState extends State<KitchenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-
-
-            child: Image.asset(
-              'assets/nightkitchen.jpg', // Ensure the image is placed in assets folder and referenced in pubspec.yaml
-              fit: BoxFit.cover,
+        body: Container(
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(
+                'assets/nightkitchen.jpg',
+              ),
+              fit: BoxFit.cover)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: 50),
+          if (!_isConnected) ...[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _switchboardController,
+                decoration: InputDecoration(
+                  labelText: 'Enter Switchboard API/ID',
+                  border: OutlineInputBorder(),
+                ),
+              ),
             ),
-          ),
-          Positioned.fill(
-            child: Container(
-              color: Colors.black.withOpacity(0.5),
+            ElevatedButton(
+              onPressed: connectToSwitch,
+              child: Text('Connect to Switch'),
             ),
-          ),
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 50),
-                if (!_isConnected) ...[
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextField(
-                      controller: _switchboardController,
-                      decoration: InputDecoration(
-                        labelText: 'Enter Switchboard API/ID',
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
+          ] else ...[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Connected to Switch: ${_switchboardController.text}',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            for (var device in devices.keys)
+              Card(
+                color: Colors.black.withOpacity(0.6),
+                margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                child: ListTile(
+                  title: Text(
+                    device,
+                    style: TextStyle(color: Colors.white),
                   ),
-                  ElevatedButton(
-                    onPressed: connectToSwitch,
-                    child: Text('Connect to Switch'),
-                  ),
-                ] else ...[
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'Connected to Switch: ${_switchboardController.text}',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  for (var device in devices.keys)
-                    Card(
-                      color: Colors.black.withOpacity(0.6),
-                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                      child: ListTile(
-                        title: Text(
-                          device,
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        trailing: device == "Fan"
-                            ? DropdownButton<int>(
+                  trailing: device == "Fan"
+                      ? DropdownButton<int>(
                           value: devices[device],
                           dropdownColor: Colors.black,
                           items: [
@@ -124,19 +119,16 @@ class _KitchenPageState extends State<KitchenPage> {
                             });
                           },
                         )
-                            : Switch(
+                      : Switch(
                           value: devices[device],
                           onChanged: (value) => toggleDevice(device),
                           activeColor: Colors.green,
                         ),
-                      ),
-                    ),
-                ],
-              ],
-            ),
-          ),
+                ),
+              ),
+          ],
         ],
       ),
-    );
+    ));
   }
 }
