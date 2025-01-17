@@ -369,7 +369,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       applicationName: 'Smart Home App',
       applicationVersion: '1.0.0',
       applicationIcon: Image.asset(
-        'assets/app_icon.png',
+        'assets/logo.jpg',
         width: 50,
         height: 50,
       ),

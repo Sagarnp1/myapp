@@ -168,16 +168,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         finalImagePath = 'assets/kit.jpg';
                         break;
                       case 'dining room':
-                        finalImagePath = 'assets/dining_room.jpg';
+                        finalImagePath = 'assets/dining.jpg';
                         break;
                       case 'bathroom':
-                        finalImagePath = 'assets/bathroom.jpg';
+                        finalImagePath = 'assets/nightbathroom.jpg';
                         break;
                       case 'living room':
-                        finalImagePath = 'assets/light1.jpg';
+                        finalImagePath = 'assets/lv.jpg';
                         break;
+
                       default:
-                        finalImagePath = 'assets/bg.jpg';
+                        finalImagePath = 'assets/kitchen.jpeg';
                     }
                   }
 
