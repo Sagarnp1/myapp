@@ -1,7 +1,10 @@
 //
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class KitchenPage extends StatefulWidget {
+  const KitchenPage({super.key});
+
   @override
   _KitchenPageState createState() => _KitchenPageState();
 }
@@ -80,7 +83,9 @@ class _KitchenPageState extends State<KitchenPage> {
         _isConnected = true;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Connected to switch: ${_switchboardController.text}')),
+        SnackBar(
+            content:
+                Text('Connected to switch: ${_switchboardController.text}')),
       );
     }
   }
@@ -116,7 +121,10 @@ class _KitchenPageState extends State<KitchenPage> {
             if (device['state'])
               Column(
                 children: [
-                  Text('Intensity: ${device['intensity']}%'),
+                  Text(
+                    'Intensity: ${device['intensity']}%',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   Slider(
                     value: device['intensity'].toDouble(),
                     min: 0,
@@ -148,7 +156,10 @@ class _KitchenPageState extends State<KitchenPage> {
             if (device['state'])
               Column(
                 children: [
-                  Text('Temperature: ${device['temperature']}°C'),
+                  Text(
+                    'Temperature: ${device['temperature']}°C',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   Slider(
                     value: device['temperature'].toDouble(),
                     min: deviceName == "Refrigerator" ? 1 : 16,
@@ -161,6 +172,8 @@ class _KitchenPageState extends State<KitchenPage> {
                     },
                   ),
                   DropdownButton<String>(
+                    dropdownColor: Colors.transparent,
+                    style: TextStyle(color: Colors.white),
                     value: device['mode'],
                     items: <String>['cool', 'heat', 'auto']
                         .map<DropdownMenuItem<String>>((String value) {
@@ -195,7 +208,10 @@ class _KitchenPageState extends State<KitchenPage> {
             if (device['state'])
               Column(
                 children: [
-                  Text('Volume: ${device['volume']}%'),
+                  Text(
+                    'Volume: ${device['volume']}%',
+                    style: TextStyle(color: Colors.white),
+                  ),
                   Slider(
                     value: device['volume'].toDouble(),
                     min: 0,
@@ -227,6 +243,8 @@ class _KitchenPageState extends State<KitchenPage> {
             if (device['state'])
               DropdownButton<int>(
                 value: device['speed'],
+                style: TextStyle(color: Colors.white),
+                dropdownColor: Colors.transparent,
                 items: [
                   DropdownMenuItem(value: 0, child: Text("Off")),
                   DropdownMenuItem(value: 1, child: Text("Low")),
@@ -256,73 +274,72 @@ class _KitchenPageState extends State<KitchenPage> {
   }
 
   Widget buildDeviceGrid() {
-    return Container(
-      padding: EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "${selectedDevices.length} devices connected",
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "${selectedDevices.length} devices connected",
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.white,
           ),
-          SizedBox(height: 20),
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.8,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: selectedDevices.length,
-              itemBuilder: (context, index) {
-                String deviceName = selectedDevices.keys.elementAt(index);
-                var device = selectedDevices[deviceName]!;
-                return Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(50),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 10,
-                        spreadRadius: 2,
+        ),
+        // SizedBox(height: 20),
+        Expanded(
+          child: GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.8,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+            ),
+            itemCount: selectedDevices.length,
+            itemBuilder: (context, index) {
+              String deviceName = selectedDevices.keys.elementAt(index);
+              var device = selectedDevices[deviceName]!;
+              return Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(180, 99, 99, 99).withAlpha(-170),
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(255, 124, 124, 124)
+                          .withValues(alpha: 0.7),
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(5),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        device['icon'],
+                        size: 32,
+                        color:
+                            device['state'] ? Color(0xFFCC5500) : Colors.white,
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          device['icon'],
-                          size: 32,
-                          color: device['state'] ? Color(0xFFCC5500) : Colors.grey,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          deviceName,
-                          style: TextStyle(
+                      SizedBox(height: 5),
+                      Text(
+                        deviceName,
+                        style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w500,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        SizedBox(height: 8),
-                        buildDeviceControls(deviceName, device),
-                      ],
-                    ),
+                            color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 5),
+                      buildDeviceControls(deviceName, device),
+                    ],
                   ),
-                );
-              },
-            ),
+                ),
+              ).marginOnly(left: 10, right: 10, bottom: 3);
+            },
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -370,7 +387,6 @@ class _KitchenPageState extends State<KitchenPage> {
           padding: const EdgeInsets.all(16.0),
           child: ElevatedButton(
             onPressed: confirmDeviceSelection,
-            child: Text('Confirm Selection'),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFFCC5500),
               padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -378,6 +394,7 @@ class _KitchenPageState extends State<KitchenPage> {
                 borderRadius: BorderRadius.circular(30),
               ),
             ),
+            child: Text('Confirm Selection'),
           ),
         ),
       ],
@@ -396,7 +413,8 @@ class _KitchenPageState extends State<KitchenPage> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/kitche.jpg"), // Use AssetImage for local assets
+            image: AssetImage(
+                "assets/kitche.jpg"), // Use AssetImage for local assets
             fit: BoxFit.cover,
           ),
         ),
@@ -406,41 +424,42 @@ class _KitchenPageState extends State<KitchenPage> {
           ),
           child: !_isConnected
               ? Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextField(
-                    controller: _switchboardController,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      labelText: 'Enter Switchboard API/ID',
-                      labelStyle: TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextField(
+                          controller: _switchboardController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Enter Switchboard API/ID',
+                            labelStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: connectToSwitch,
+                          child: Text('Connect to Switch'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFCC5500),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 32, vertical: 16),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: connectToSwitch,
-                    child: Text('Connect to Switch'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFCC5500),
-                      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
+                )
               : !_hasSelectedDevices
-              ? buildDeviceSelectionList()
-              : buildDeviceGrid(),
+                  ? buildDeviceSelectionList()
+                  : buildDeviceGrid(),
         ),
       ),
     );

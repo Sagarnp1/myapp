@@ -1,7 +1,7 @@
 
 import '../screens/BathroomScreen.dart';
 import '../screens/DiningRoomScreen.dart';
-import '../screens/KitchenScreen.dart';
+import '../screens/kitchen_screen.dart';
 import '../screens/LivingRoomScreen.dart';
 
 List<Map<String, dynamic>> rooms = [

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'weather/weatherModel.dart';
-import 'screens/KitchenScreen.dart';
+import 'screens/kitchen_screen.dart';
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
