@@ -12,7 +12,10 @@ class KitchenPage extends StatefulWidget {
 class _KitchenPageState extends State<KitchenPage> {
   final TextEditingController _switchboardController = TextEditingController();
   bool _isConnected = false;
+  bool _hasSwitchSelected = false;
   bool _hasSelectedDevices = false;
+  int? _selectedSwitch;
+  final List<int> availableSwitches = [1, 2, 3, 4, 5, 6];
 
   // Enhanced device configuration
   final Map<String, Map<String, dynamic>> availableDevices = {
@@ -88,6 +91,66 @@ class _KitchenPageState extends State<KitchenPage> {
                 Text('Connected to switch: ${_switchboardController.text}')),
       );
     }
+  }
+
+  Widget buildSwitchSelection() {
+    return Container(
+      padding: EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Select Switch Number',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 30),
+          GridView.builder(
+            shrinkWrap: true,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 15,
+              mainAxisSpacing: 15,
+            ),
+            itemCount: availableSwitches.length,
+            itemBuilder: (context, index) {
+              int switchNum = availableSwitches[index];
+              return ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _selectedSwitch == switchNum
+                      ? Color(0xFFCC5500)
+                      : Colors.grey.withOpacity(0.7),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  padding: EdgeInsets.all(20),
+                ),
+                onPressed: () {
+                  setState(() {
+                    _selectedSwitch = switchNum;
+                    _hasSwitchSelected = true;
+                  });
+                },
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.power_settings_new, size: 30),
+                    SizedBox(height: 8),
+                    Text(
+                      'Switch $switchNum',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   void confirmDeviceSelection() {
@@ -299,16 +362,8 @@ class _KitchenPageState extends State<KitchenPage> {
               var device = selectedDevices[deviceName]!;
               return Container(
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(180, 99, 99, 99).withAlpha(-170),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(255, 124, 124, 124)
-                          .withValues(alpha: 0.7),
-                      blurRadius: 10,
-                      spreadRadius: 2,
-                    ),
-                  ],
+                  color: Colors.black54,
+                  borderRadius: BorderRadius.circular(15),
                 ),
                 child: Padding(
                   padding: EdgeInsets.all(5),
@@ -409,12 +464,23 @@ class _KitchenPageState extends State<KitchenPage> {
         title: Text('Kitchen Control'),
         backgroundColor: Color(0xFFCC5500),
         elevation: 0,
+        actions: [
+          if (_hasSwitchSelected)
+            Padding(
+              padding: EdgeInsets.only(right: 16),
+              child: Center(
+                child: Text(
+                  'Switch ${_selectedSwitch}',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(
-                "assets/kitche.jpg"), // Use AssetImage for local assets
+            image: AssetImage("assets/kitche.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -457,9 +523,11 @@ class _KitchenPageState extends State<KitchenPage> {
                     ),
                   ),
                 )
-              : !_hasSelectedDevices
-                  ? buildDeviceSelectionList()
-                  : buildDeviceGrid(),
+              : !_hasSwitchSelected
+                  ? buildSwitchSelection()
+                  : !_hasSelectedDevices
+                      ? buildDeviceSelectionList()
+                      : buildDeviceGrid(),
         ),
       ),
     );

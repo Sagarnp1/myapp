@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DiningRoomPage extends StatefulWidget {
-  const DiningRoomPage({super.key});
+class BedroomPage extends StatefulWidget {
+  const BedroomPage({super.key});
 
   @override
-  _DiningRoomPageState createState() => _DiningRoomPageState();
+  _BedroomPageState createState() => _BedroomPageState();
 }
 
-class _DiningRoomPageState extends State<DiningRoomPage> {
+class _BedroomPageState extends State<BedroomPage> {
   final TextEditingController _switchboardController = TextEditingController();
   bool _isConnected = false;
   bool _hasSwitchSelected = false;
@@ -18,26 +18,19 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
   final List<int> availableSwitches = [1, 2, 3, 4, 5, 6];
 
   final Map<String, Map<String, dynamic>> availableDevices = {
-    "Chandelier": {
-      "selected": false,
-      "icon": Icons.light,
-      "type": "intensity",
-      "state": false,
-      "intensity": 70,
-    },
-    "Wall Lights": {
+    "Main Light": {
       "selected": false,
       "icon": Icons.lightbulb_outline,
       "type": "intensity",
       "state": false,
       "intensity": 50,
     },
-    "Smart Curtains": {
+    "Bedside Lamp": {
       "selected": false,
-      "icon": Icons.curtains,
-      "type": "position",
+      "icon": Icons.light,
+      "type": "intensity",
       "state": false,
-      "position": 0,
+      "intensity": 30,
     },
     "AC": {
       "selected": false,
@@ -47,6 +40,20 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
       "temperature": 24,
       "mode": "cool",
     },
+    "TV": {
+      "selected": false,
+      "icon": Icons.tv,
+      "type": "volume",
+      "state": false,
+      "volume": 30,
+    },
+    "Smart Curtains": {
+      "selected": false,
+      "icon": Icons.curtains,
+      "type": "position",
+      "state": false,
+      "position": 0,
+    },
     "Ceiling Fan": {
       "selected": false,
       "icon": Icons.rotate_right,
@@ -54,18 +61,12 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
       "state": false,
       "speed": 0,
     },
-    "Smart Display": {
+    "Night Light": {
       "selected": false,
-      "icon": Icons.tv,
-      "type": "switch",
-      "state": false,
-    },
-    "Ambient Lights": {
-      "selected": false,
-      "icon": Icons.wb_twilight,
+      "icon": Icons.nightlight_round,
       "type": "intensity",
       "state": false,
-      "intensity": 30,
+      "intensity": 20,
     },
     "Air Purifier": {
       "selected": false,
@@ -77,15 +78,14 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
   };
 
   Map<String, Map<String, dynamic>> selectedDevices = {};
+
   void connectToSwitch() {
     if (_switchboardController.text.isNotEmpty) {
       setState(() {
         _isConnected = true;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content:
-            Text('Connected to switch: ${_switchboardController.text}')),
+        SnackBar(content: Text('Connected to switch: ${_switchboardController.text}')),
       );
     }
   }
@@ -222,64 +222,12 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
                   ),
                   Slider(
                     value: device['temperature'].toDouble(),
-                    min: deviceName == "Refrigerator" ? 1 : 16,
-                    max: deviceName == "Refrigerator" ? 8 : 30,
+                    min: 16,
+                    max: 30,
                     activeColor: Color(0xFFCC5500),
                     onChanged: (value) {
                       setState(() {
                         device['temperature'] = value.round();
-                      });
-                    },
-                  ),
-                  DropdownButton<String>(
-                    dropdownColor: Colors.transparent,
-                    style: TextStyle(color: Colors.white),
-                    value: device['mode'],
-                    items: <String>['cool', 'heat', 'auto']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value.toUpperCase()),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        device['mode'] = newValue!;
-                      });
-                    },
-                  ),
-                ],
-              ),
-          ],
-        );
-
-      case 'volume':
-        return Column(
-          children: [
-            Switch(
-              value: device['state'],
-              activeColor: Color(0xFFCC5500),
-              onChanged: (value) {
-                setState(() {
-                  device['state'] = value;
-                });
-              },
-            ),
-            if (device['state'])
-              Column(
-                children: [
-                  Text(
-                    'Volume: ${device['volume']}%',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  Slider(
-                    value: device['volume'].toDouble(),
-                    min: 0,
-                    max: 100,
-                    activeColor: Color(0xFFCC5500),
-                    onChanged: (value) {
-                      setState(() {
-                        device['volume'] = value.round();
                       });
                     },
                   ),
@@ -303,8 +251,8 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
             if (device['state'])
               DropdownButton<int>(
                 value: device['speed'],
+                dropdownColor: Colors.grey[800],
                 style: TextStyle(color: Colors.white),
-                dropdownColor: Colors.transparent,
                 items: [
                   DropdownMenuItem(value: 0, child: Text("Off")),
                   DropdownMenuItem(value: 1, child: Text("Low")),
@@ -337,16 +285,19 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "${selectedDevices.length} devices connected",
-          style: TextStyle(
-            fontSize: 18,
-            color: Colors.white,
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            "${selectedDevices.length} devices connected",
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+            ),
           ),
         ),
-        // SizedBox(height: 20),
         Expanded(
           child: GridView.builder(
+            padding: const EdgeInsets.all(16),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               childAspectRatio: 0.8,
@@ -363,31 +314,31 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(5),
+                  padding: EdgeInsets.all(16),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         device['icon'],
                         size: 32,
-                        color:
-                        device['state'] ? Color(0xFFCC5500) : Colors.white,
+                        color: device['state'] ? Color(0xFFCC5500) : Colors.white,
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 8),
                       Text(
                         deviceName,
                         style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white),
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 5),
+                      SizedBox(height: 16),
                       buildDeviceControls(deviceName, device),
                     ],
                   ),
                 ),
-              ).marginOnly(left: 10, right: 10, bottom: 3);
+              );
             },
           ),
         ),
@@ -401,22 +352,23 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Select Kitchen Devices',
+            'Select Bedroom Devices',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 24,
               fontWeight: FontWeight.bold,
             ),
           ),
         ),
         Expanded(
           child: ListView.builder(
+            padding: const EdgeInsets.all(16),
             itemCount: availableDevices.length,
             itemBuilder: (context, index) {
               String device = availableDevices.keys.elementAt(index);
               var deviceData = availableDevices[device]!;
               return Card(
-                margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+                margin: EdgeInsets.only(bottom: 8),
                 color: Colors.white.withOpacity(0.9),
                 child: ListTile(
                   leading: Icon(deviceData['icon']),
@@ -452,27 +404,20 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
       ],
     );
   }
-  // Include all the same methods as BedroomPage:
-  // connectToSwitch()
-  // buildSwitchSelection()
-  // confirmDeviceSelection()
-  // buildDeviceControls()
-  // buildDeviceGrid()
-  // buildDeviceSelectionList()
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: Text('Dining Room Control'),
+        title: Text('Bedroom Control'),
         backgroundColor: Color(0xFFCC5500),
         elevation: 0,
       ),
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/dining.jpg"),
+            image: AssetImage("assets/nghtbedroom.jpg"),
             fit: BoxFit.cover,
           ),
         ),

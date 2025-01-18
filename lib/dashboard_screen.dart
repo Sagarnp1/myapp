@@ -1,6 +1,11 @@
 import 'dart:async';
 
 import 'package:app/model/user_location.dart';
+import 'package:app/screens/BathroomScreen.dart';
+import 'package:app/screens/DiningRoomScreen.dart';
+import 'package:app/screens/LivingRoomScreen.dart';
+import 'package:app/screens/bedroompage.dart';
+import 'package:app/screens/defualtroom.dart';
 import 'package:app/weather/apiResponse.dart';
 import 'package:app/widgeets/custom_card.dart';
 import 'package:flutter/material.dart';
@@ -117,6 +122,98 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
+  // void _showAddRoomDialog() {
+  //   final _nameController = TextEditingController();
+  //   final _imageController = TextEditingController();
+  //
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: const Text('Add New Room'),
+  //         content: SingleChildScrollView(
+  //           child: Column(
+  //             mainAxisSize: MainAxisSize.min,
+  //             children: [
+  //               TextField(
+  //                 controller: _nameController,
+  //                 decoration: const InputDecoration(
+  //                   labelText: 'Room Name',
+  //                   hintText: 'Enter room name',
+  //                 ),
+  //               ),
+  //               const SizedBox(height: 16),
+  //               TextField(
+  //                 controller: _imageController,
+  //                 decoration: const InputDecoration(
+  //                   labelText: 'Image Path',
+  //                   hintText: 'Optional: Enter image path',
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         ),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: const Text('Cancel'),
+  //           ),
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               final roomName = _nameController.text.trim();
+  //               final imagePath = _imageController.text.trim();
+  //
+  //               if (roomName.isNotEmpty) {
+  //                 String finalImagePath = imagePath;
+  //
+  //                 if (imagePath.isEmpty) {
+  //                   // Assign default images based on room name
+  //                   switch (roomName.toLowerCase()) {
+  //                     case 'kitchen':
+  //                       finalImagePath = 'assets/kit.jpg';
+  //                       break;
+  //                     case 'dining room':
+  //                       finalImagePath = 'assets/dining.jpg';
+  //                       break;
+  //                     case 'bathroom':
+  //                       finalImagePath = 'assets/nightbathroom.jpg';
+  //                       break;
+  //                     case 'living room':
+  //                       finalImagePath = 'assets/lv.jpg';
+  //                       break;
+  //
+  //                     default:
+  //                       finalImagePath = 'assets/kitchen.jpeg';
+  //                   }
+  //                 }
+  //
+  //                 setState(() {
+  //                   rooms.add({
+  //                     'name': roomName,
+  //                     'image': finalImagePath,
+  //                     // Assign specific screen for Kitchen, else use GenericRoomScreen
+  //                     'screen': roomName.toLowerCase() == 'kitchen'
+  //                         ? KitchenPage()
+  //                         : GenericRoomScreen(roomName: roomName),
+  //                   });
+  //                 });
+  //                 Navigator.pop(context);
+  //                 ScaffoldMessenger.of(context).showSnackBar(
+  //                   SnackBar(content: Text('$roomName added successfully!')),
+  //                 );
+  //               } else {
+  //                 ScaffoldMessenger.of(context).showSnackBar(
+  //                   const SnackBar(content: Text('Room name cannot be empty.')),
+  //                 );
+  //               }
+  //             },
+  //             child: const Text('Add'),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
   void _showAddRoomDialog() {
     final _nameController = TextEditingController();
     final _imageController = TextEditingController();
@@ -165,31 +262,51 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     // Assign default images based on room name
                     switch (roomName.toLowerCase()) {
                       case 'kitchen':
+                      case 'vansa': // Synonym for kitchen
                         finalImagePath = 'assets/kit.jpg';
                         break;
                       case 'dining room':
                         finalImagePath = 'assets/dining.jpg';
                         break;
                       case 'bathroom':
-                        finalImagePath = 'assets/nightbathroom.jpg';
+                      case 'toilet': // Synonym for bathroom
+                      case 'restroom': // Another synonym for bathroom
+                        finalImagePath = 'assets/nightbath.jpg';
                         break;
                       case 'living room':
+                      case 'guest room': // Synonym for living room
                         finalImagePath = 'assets/lv.jpg';
                         break;
-
                       default:
-                        finalImagePath = 'assets/kitchen.jpeg';
+                        if (roomName.toLowerCase().contains('bedroom')) {
+                          finalImagePath = 'assets/nghtbedroom.jpg'; // Bedroom image
+                        } else {
+                          finalImagePath = 'assets/default.jpg'; // Default case
+                        }
                     }
+
                   }
 
                   setState(() {
                     rooms.add({
                       'name': roomName,
                       'image': finalImagePath,
-                      // Assign specific screen for Kitchen, else use GenericRoomScreen
-                      'screen': roomName.toLowerCase() == 'kitchen'
+                      // Assign specific screen for Kitchen and Living Room, else use GenericRoomScreen
+                      'screen': roomName.toLowerCase() == 'kitchen' || roomName.toLowerCase() == 'vansa'
                           ? KitchenPage()
+                          : roomName.toLowerCase() == 'living room' || roomName.toLowerCase() == 'guest room'
+                          ? LivingRoomPage() // Navigate to LivingRoomScreen
+                          : roomName.toLowerCase() == 'bathroom' || roomName.toLowerCase() == 'toilet'
+                          ? BathroomPage()
+                          : roomName.toLowerCase().contains('bedroom') || roomName.toLowerCase() == 'myroom'
+                          ? BedroomPage()
+                          : roomName.toLowerCase() == 'dining' || roomName.toLowerCase() == 'dining room'
+                          ? DiningRoomPage()
+                          : roomName.trim().isEmpty // Handle empty room name
+                          ? DefaultRoomPage(backgroundImage: 'assets/default.jpg', roomName: roomName.toLowerCase(),)
                           : GenericRoomScreen(roomName: roomName),
+
+
                     });
                   });
                   Navigator.pop(context);
@@ -209,6 +326,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       },
     );
   }
+
 
 
   @override

@@ -13,16 +13,18 @@ List<Map<String, dynamic>> rooms = [
   {
     'name': 'Living Room',
     'image': 'assets/living_room.jpg',
-    'screen': LivingRoomScreen(),
+    'screen': LivingRoomPage(),
   },
   {
     'name': 'Dining Room',
     'image': 'assets/dining.jpeg',
-    'screen': DiningRoomScreen(),
+    'screen': DiningRoomPage(),
   },
   {
     'name': 'Bathroom',
     'image': 'assets/bathroom.jpeg',
-    'screen': BathroomScreen(),
+    'screen': BathroomPage(),
   },
+
+
 ];
