@@ -382,12 +382,12 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
                             color: Colors.white),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 5),
+                      //SizedBox(height: 3),
                       buildDeviceControls(deviceName, device),
                     ],
                   ),
                 ),
-              ).marginOnly(left: 10, right: 10, bottom: 3);
+              ).marginOnly(left: 10, right: 10);
             },
           ),
         ),

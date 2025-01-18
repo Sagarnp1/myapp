@@ -380,12 +380,12 @@ class _LivingRoomPageState extends State<LivingRoomPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 5),
+                     // SizedBox(height: 5),
                       buildDeviceControls(deviceName, device),
                     ],
                   ),
                 ),
-              ).marginOnly(left: 10, right: 10, bottom: 3);
+              ).marginOnly(left: 10, right: 10);
             },
           ),
         ),

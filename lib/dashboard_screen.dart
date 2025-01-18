@@ -122,98 +122,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  // void _showAddRoomDialog() {
-  //   final _nameController = TextEditingController();
-  //   final _imageController = TextEditingController();
-  //
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         title: const Text('Add New Room'),
-  //         content: SingleChildScrollView(
-  //           child: Column(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               TextField(
-  //                 controller: _nameController,
-  //                 decoration: const InputDecoration(
-  //                   labelText: 'Room Name',
-  //                   hintText: 'Enter room name',
-  //                 ),
-  //               ),
-  //               const SizedBox(height: 16),
-  //               TextField(
-  //                 controller: _imageController,
-  //                 decoration: const InputDecoration(
-  //                   labelText: 'Image Path',
-  //                   hintText: 'Optional: Enter image path',
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             onPressed: () => Navigator.pop(context),
-  //             child: const Text('Cancel'),
-  //           ),
-  //           ElevatedButton(
-  //             onPressed: () {
-  //               final roomName = _nameController.text.trim();
-  //               final imagePath = _imageController.text.trim();
-  //
-  //               if (roomName.isNotEmpty) {
-  //                 String finalImagePath = imagePath;
-  //
-  //                 if (imagePath.isEmpty) {
-  //                   // Assign default images based on room name
-  //                   switch (roomName.toLowerCase()) {
-  //                     case 'kitchen':
-  //                       finalImagePath = 'assets/kit.jpg';
-  //                       break;
-  //                     case 'dining room':
-  //                       finalImagePath = 'assets/dining.jpg';
-  //                       break;
-  //                     case 'bathroom':
-  //                       finalImagePath = 'assets/nightbathroom.jpg';
-  //                       break;
-  //                     case 'living room':
-  //                       finalImagePath = 'assets/lv.jpg';
-  //                       break;
-  //
-  //                     default:
-  //                       finalImagePath = 'assets/kitchen.jpeg';
-  //                   }
-  //                 }
-  //
-  //                 setState(() {
-  //                   rooms.add({
-  //                     'name': roomName,
-  //                     'image': finalImagePath,
-  //                     // Assign specific screen for Kitchen, else use GenericRoomScreen
-  //                     'screen': roomName.toLowerCase() == 'kitchen'
-  //                         ? KitchenPage()
-  //                         : GenericRoomScreen(roomName: roomName),
-  //                   });
-  //                 });
-  //                 Navigator.pop(context);
-  //                 ScaffoldMessenger.of(context).showSnackBar(
-  //                   SnackBar(content: Text('$roomName added successfully!')),
-  //                 );
-  //               } else {
-  //                 ScaffoldMessenger.of(context).showSnackBar(
-  //                   const SnackBar(content: Text('Room name cannot be empty.')),
-  //                 );
-  //               }
-  //             },
-  //             child: const Text('Add'),
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+  Color getAppBarColor() {
+    // Get the current hour
+    final int hour = DateTime.now().hour;
+
+    // Return blue for nighttime and yellow for daytime
+    return (hour >= 6 && hour < 18) ? Color(0xFFCC5500) : Colors.blue.shade800;
+  }
   void _showAddRoomDialog() {
     final _nameController = TextEditingController();
     final _imageController = TextEditingController();
@@ -222,6 +137,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.orange.shade300,
           title: const Text('Add New Room'),
           content: SingleChildScrollView(
             child: Column(
@@ -304,7 +220,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ? DiningRoomPage()
                           : roomName.trim().isEmpty // Handle empty room name
                           ? DefaultRoomPage(backgroundImage: 'assets/default.jpg', roomName: roomName.toLowerCase(),)
-                          : GenericRoomScreen(roomName: roomName),
+                          : DefaultRoomPage(roomName: roomName, backgroundImage: 'assets/default.jpg',),
 
 
                     });
@@ -353,7 +269,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             'Smart Home Dashboard',
             style: TextStyle(color: Colors.white),
           ),
-          backgroundColor: Color(0xFFCC5500),
+          backgroundColor:getAppBarColor() ,
           automaticallyImplyLeading: false,
         ),
         body: Container(
@@ -501,7 +417,7 @@ class GenericRoomScreen extends StatelessWidget {
       ),
       body: Center(
         child: Text(
-          '$roomName Controls',
+          '$roomName Controls ',
           style: const TextStyle(fontSize: 24),
         ),
       ),

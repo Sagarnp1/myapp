@@ -333,7 +333,7 @@ class _BedroomPageState extends State<BedroomPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 16),
+                      //SizedBox(height: 16),
                       buildDeviceControls(deviceName, device),
                     ],
                   ),

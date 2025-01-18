@@ -1,4 +1,5 @@
 import 'package:app/bottom_nav_page.dart';
+import 'package:app/screens/forgotpassword.dart';
 import 'package:flutter/material.dart';
 import 'dashboard_screen.dart';
 import 'register_page.dart';
@@ -109,6 +110,18 @@ class _SignInPageState extends State<SignInPage> {
                         'Remember Me',
                         style: TextStyle(color: Colors.white),
                       ),
+                      SizedBox(width: 80,),
+                      GestureDetector(onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>ForgotPasswordPage(),
+                          ),
+                        );
+                      },
+                        child: Text('forgot password?',style: TextStyle(color: Colors.white),
+                                  ),
+                      )
                     ],
                   ),
                   SizedBox(height: 16),

@@ -377,7 +377,7 @@ class _DefaultRoomPageState extends State<DefaultRoomPage> {
               var device = selectedDevices[deviceName]!;
               return Container(
                 decoration: BoxDecoration(
-                  color: Colors.black26,
+                  color: Colors.black54,
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: Padding(
@@ -400,7 +400,7 @@ class _DefaultRoomPageState extends State<DefaultRoomPage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      SizedBox(height: 16),
+                      //SizedBox(height: 16),
                       buildDeviceControls(deviceName, device),
                     ],
                   ),

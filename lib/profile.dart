@@ -1,3 +1,5 @@
+import 'package:app/screens/ChangePassword.dart';
+import 'package:app/siginpage.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -11,7 +13,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   bool notificationsEnabled = true;
-  bool darkModeEnabled = false;
+
   String selectedLanguage = 'English';
   String userName = 'John Doe';
   String userEmail = 'john.doe@example.com';
@@ -109,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: const Text('Change Password'),
               onTap: () {
                 Navigator.pop(context);
-                _showChangePasswordDialog();
+                _showChangePasswordDialog(context);
               },
             ),
             ListTile(
@@ -134,10 +136,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _showChangePasswordDialog() {
-    // Implementation for password change dialog
+  void _showChangePasswordDialog(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ChangePasswordPage(),
+      ),
+    );
   }
-
   void _show2FADialog() {
     // Implementation for 2FA setup dialog
   }
@@ -219,7 +225,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/login');
+              Navigator.pushReplacement(context , MaterialPageRoute(builder: (context) {
+                return SignInPage();
+              },));
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
@@ -299,21 +307,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
             ),
-            ListTile(
-              leading: const Icon(Icons.dark_mode),
-              title: const Text('Dark Mode'),
-              trailing: Switch(
-                value: darkModeEnabled,
-                onChanged: (value) {
-                  setState(() {
-                    darkModeEnabled = value;
-                  });
-                  widget.onThemeChanged?.call(
-                    value ? ThemeMode.dark : ThemeMode.light,
-                  );
-                },
-              ),
-            ),
+
             ListTile(
               leading: const Icon(Icons.language),
               title: const Text('Language'),
