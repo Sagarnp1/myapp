@@ -393,6 +393,7 @@ class _LivingRoomPageState extends State<LivingRoomPage> {
     );
   }
 
+
   Widget buildDeviceSelectionList() {
     return Column(
       children: [
@@ -419,12 +420,21 @@ class _LivingRoomPageState extends State<LivingRoomPage> {
                 child: ListTile(
                   leading: Icon(deviceData['icon']),
                   title: Text(device),
-                  trailing: Checkbox(
-                    value: deviceData['selected'],
+                  trailing: Radio(
+                    value: device,
+                    groupValue: selectedDevices.isNotEmpty ? selectedDevices.keys.first : null,
                     activeColor: Color(0xFFCC5500),
-                    onChanged: (bool? value) {
+                    onChanged: (value) {
                       setState(() {
-                        deviceData['selected'] = value!;
+                        // Deselect all devices first
+                        availableDevices.forEach((key, data) {
+                          data['selected'] = false;
+                        });
+                        // Select the current device
+                        deviceData['selected'] = true;
+                        // Update selectedDevices to reflect the current selection
+                        selectedDevices.clear();
+                        selectedDevices[device] = deviceData;
                       });
                     },
                   ),

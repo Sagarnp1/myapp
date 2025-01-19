@@ -395,13 +395,70 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
     );
   }
 
+  // Widget buildDeviceSelectionList() {
+  //   return Column(
+  //     children: [
+  //       Padding(
+  //         padding: const EdgeInsets.all(16.0),
+  //         child: Text(
+  //           'Select Kitchen Devices',
+  //           style: TextStyle(
+  //             color: Colors.white,
+  //             fontSize: 20,
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //       ),
+  //       Expanded(
+  //         child: ListView.builder(
+  //           itemCount: availableDevices.length,
+  //           itemBuilder: (context, index) {
+  //             String device = availableDevices.keys.elementAt(index);
+  //             var deviceData = availableDevices[device]!;
+  //             return Card(
+  //               margin: EdgeInsets.symmetric(vertical: 4, horizontal: 16),
+  //               color: Colors.white.withOpacity(0.9),
+  //               child: ListTile(
+  //                 leading: Icon(deviceData['icon']),
+  //                 title: Text(device),
+  //                 trailing: Checkbox(
+  //                   value: deviceData['selected'],
+  //                   activeColor: Color(0xFFCC5500),
+  //                   onChanged: (bool? value) {
+  //                     setState(() {
+  //                       deviceData['selected'] = value!;
+  //                     });
+  //                   },
+  //                 ),
+  //               ),
+  //             );
+  //           },
+  //         ),
+  //       ),
+  //       Padding(
+  //         padding: const EdgeInsets.all(16.0),
+  //         child: ElevatedButton(
+  //           onPressed: confirmDeviceSelection,
+  //           style: ElevatedButton.styleFrom(
+  //             backgroundColor: Color(0xFFCC5500),
+  //             padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+  //             shape: RoundedRectangleBorder(
+  //               borderRadius: BorderRadius.circular(30),
+  //             ),
+  //           ),
+  //           child: Text('Confirm Selection'),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
   Widget buildDeviceSelectionList() {
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Select Kitchen Devices',
+            'Select DINING Room Devices',
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,
@@ -421,12 +478,21 @@ class _DiningRoomPageState extends State<DiningRoomPage> {
                 child: ListTile(
                   leading: Icon(deviceData['icon']),
                   title: Text(device),
-                  trailing: Checkbox(
-                    value: deviceData['selected'],
+                  trailing: Radio(
+                    value: device,
+                    groupValue: selectedDevices.isNotEmpty ? selectedDevices.keys.first : null,
                     activeColor: Color(0xFFCC5500),
-                    onChanged: (bool? value) {
+                    onChanged: (value) {
                       setState(() {
-                        deviceData['selected'] = value!;
+                        // Deselect all devices first
+                        availableDevices.forEach((key, data) {
+                          data['selected'] = false;
+                        });
+                        // Select the current device
+                        deviceData['selected'] = true;
+                        // Update selectedDevices to reflect the current selection
+                        selectedDevices.clear();
+                        selectedDevices[device] = deviceData;
                       });
                     },
                   ),
