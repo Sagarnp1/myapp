@@ -19,8 +19,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String userEmail = 'john.doe@example.com';
 
   void _editProfile() {
-    TextEditingController nameController = TextEditingController(text: userName);
-    TextEditingController emailController = TextEditingController(text: userEmail);
+    TextEditingController nameController =
+        TextEditingController(text: userName);
+    TextEditingController emailController =
+        TextEditingController(text: userEmail);
 
     showDialog(
       context: context,
@@ -80,17 +82,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             mainAxisSize: MainAxisSize.min,
             children: languages
                 .map((language) => ListTile(
-              title: Text(language),
-              trailing: language == selectedLanguage
-                  ? const Icon(Icons.check)
-                  : null,
-              onTap: () {
-                setState(() {
-                  selectedLanguage = language;
-                });
-                Navigator.pop(context);
-              },
-            ))
+                      title: Text(language),
+                      trailing: language == selectedLanguage
+                          ? const Icon(Icons.check)
+                          : null,
+                      onTap: () {
+                        setState(() {
+                          selectedLanguage = language;
+                        });
+                        Navigator.pop(context);
+                      },
+                    ))
                 .toList(),
           ),
         ),
@@ -144,6 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
   void _show2FADialog() {
     // Implementation for 2FA setup dialog
   }
@@ -160,11 +163,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
         content: const SingleChildScrollView(
           child: Text(
             'This Privacy Policy describes how we collect, use, and handle your personal information when you use our Smart Home application.\n\n'
-                '1. Information Collection\n'
-                '2. Data Usage\n'
-                '3. Information Security\n'
-                '4. User Rights\n'
-                '5. Updates to Policy',
+            '1. Information Collection\n'
+            '2. Data Usage\n'
+            '3. Information Security\n'
+            '4. User Rights\n'
+            '5. Updates to Policy',
           ),
         ),
         actions: [
@@ -225,9 +228,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pushReplacement(context , MaterialPageRoute(builder: (context) {
-                return SignInPage();
-              },));
+              Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (context) {
+                  return SignInPage();
+                },
+              ));
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,
@@ -239,12 +244,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Color getAppBarColor() {
+    // Get the current hour
+    final int hour = DateTime.now().hour;
+
+    // Return blue for nighttime and yellow for daytime
+    return (hour >= 6 && hour < 18) ? Color(0xFFCC5500) : Colors.blue.shade800;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        backgroundColor: const Color(0xFFCC5500),
+        automaticallyImplyLeading: false,
+        backgroundColor: getAppBarColor(),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -307,7 +321,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
             ),
-
             ListTile(
               leading: const Icon(Icons.language),
               title: const Text('Language'),

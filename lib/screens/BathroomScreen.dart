@@ -44,7 +44,7 @@ class _BathroomPageState extends State<BathroomPage> {
       "icon": Icons.hot_tub,
       "type": "temperature",
       "state": false,
-      "temperature": 40,
+      "temperature": 16,
       "mode": "heat",
     },
     "Towel Warmer": {
@@ -52,7 +52,7 @@ class _BathroomPageState extends State<BathroomPage> {
       "icon": Icons.dry,
       "type": "temperature",
       "state": false,
-      "temperature": 45,
+      "temperature": 16,
     },
     "Smart Mirror": {
       "selected": false,
@@ -83,7 +83,9 @@ class _BathroomPageState extends State<BathroomPage> {
         _isConnected = true;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Connected to switch: ${_switchboardController.text}')),
+        SnackBar(
+            content:
+                Text('Connected to switch: ${_switchboardController.text}')),
       );
     }
   }
@@ -367,7 +369,8 @@ class _BathroomPageState extends State<BathroomPage> {
                       Icon(
                         device['icon'],
                         size: 32,
-                        color: device['state'] ? Color(0xFFCC5500) : Colors.white,
+                        color:
+                            device['state'] ? Color(0xFFCC5500) : Colors.white,
                       ),
                       SizedBox(height: 5),
                       Text(
@@ -477,7 +480,9 @@ class _BathroomPageState extends State<BathroomPage> {
                   title: Text(device),
                   trailing: Radio(
                     value: device,
-                    groupValue: selectedDevices.isNotEmpty ? selectedDevices.keys.first : null,
+                    groupValue: selectedDevices.isNotEmpty
+                        ? selectedDevices.keys.first
+                        : null,
                     activeColor: Color(0xFFCC5500),
                     onChanged: (value) {
                       setState(() {
@@ -546,46 +551,46 @@ class _BathroomPageState extends State<BathroomPage> {
           ),
           child: !_isConnected
               ? Center(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextField(
-                    controller: _switchboardController,
-                    style: TextStyle(color: Colors.white),
-                    decoration: InputDecoration(
-                      labelText: 'Enter Switchboard API/ID',
-                      labelStyle: TextStyle(color: Colors.white),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                      ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextField(
+                          controller: _switchboardController,
+                          style: TextStyle(color: Colors.white),
+                          decoration: InputDecoration(
+                            labelText: 'Enter Switchboard API/ID',
+                            labelStyle: TextStyle(color: Colors.white),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: connectToSwitch,
+                          child: Text('Connect to Switch'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFCC5500),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 32,
+                              vertical: 16,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: connectToSwitch,
-                    child: Text('Connect to Switch'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFCC5500),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 32,
-                        vertical: 16,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
+                )
               : !_hasSwitchSelected
-              ? buildSwitchSelection()
-              : !_hasSelectedDevices
-              ? buildDeviceSelectionList()
-              : buildDeviceGrid(),
+                  ? buildSwitchSelection()
+                  : !_hasSelectedDevices
+                      ? buildDeviceSelectionList()
+                      : buildDeviceGrid(),
         ),
       ),
     );
