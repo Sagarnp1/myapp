@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+
+import '../siginpage.dart';
 class ChangePasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -66,10 +68,12 @@ class ChangePasswordPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16),
+
                   ElevatedButton(
                     onPressed: () {
-                      // Add logic to handle password change
-                      Navigator.pop(context);
+                      Navigator.pushReplacement(context , MaterialPageRoute(builder: (context) {
+                        return SignInPage();
+                      },));
                     },
                     child: Text('Change Password'),
                     style: ElevatedButton.styleFrom(
@@ -79,6 +83,7 @@ class ChangePasswordPage extends StatelessWidget {
                       ),
                     ),
                   ),
+
                 ],
               ),
             ),

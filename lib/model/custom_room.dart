@@ -7,22 +7,22 @@ import '../screens/LivingRoomScreen.dart';
 List<Map<String, dynamic>> rooms = [
   {
     'name': 'Kitchen',
-    'image': 'assets/kitchen.jpeg',
+    'image': 'assets/kit.jpg',
     'screen': KitchenPage(),
   },
   {
     'name': 'Living Room',
-    'image': 'assets/living_room.jpg',
+    'image': 'assets/livingroom.jpg',
     'screen': LivingRoomPage(),
   },
   {
     'name': 'Dining Room',
-    'image': 'assets/dining.jpeg',
+    'image': 'assets/dining.jpg',
     'screen': DiningRoomPage(),
   },
   {
     'name': 'Bathroom',
-    'image': 'assets/bathroom.jpeg',
+    'image': 'assets/bathroom.jpg',
     'screen': BathroomPage(),
   },
 

@@ -197,7 +197,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         if (roomName.toLowerCase().contains('bedroom')) {
                           finalImagePath = 'assets/nghtbedroom.jpg'; // Bedroom image
                         } else {
-                          finalImagePath = 'assets/default.jpg'; // Default case
+                          finalImagePath = 'assets/livingroom.jpg'; // Default case
                         }
                     }
 
@@ -219,7 +219,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           : roomName.toLowerCase() == 'dining' || roomName.toLowerCase() == 'dining room'
                           ? DiningRoomPage()
                           : roomName.trim().isEmpty // Handle empty room name
-                          ? DefaultRoomPage(backgroundImage: 'assets/default.jpg', roomName: roomName.toLowerCase(),)
+                          ? DefaultRoomPage(backgroundImage: 'assets/livingroom.jpg', roomName: roomName.toLowerCase(),)
                           : DefaultRoomPage(roomName: roomName, backgroundImage: 'assets/default.jpg',),
 
 
